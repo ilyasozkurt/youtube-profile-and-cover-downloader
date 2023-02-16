@@ -8,7 +8,6 @@ include 'library/simple_html_dom.php';
 use GuzzleHttp\Client;
 
 $client = new Client([
-    'base_uri' => 'https://www.youtube.com/',
     'timeout' => 2.0,
 ]);
 
