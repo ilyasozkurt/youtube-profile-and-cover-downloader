@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+
 include 'vendor/autoload.php';
 include 'library/simple_html_dom.php';
 
@@ -22,6 +24,10 @@ if (!in_array($downloadType, ['cover', 'profile'])) {
 $response = $client->request('GET', $channelURL);
 $responseBody = $response->getBody();
 $responseDom = str_get_html($responseBody);
+
+if (!$responseDom) {
+    print json_encode(['error' => 'Invalid channel URL']);
+}
 
 $initialData = preg_match('/ytInitialData = (.*);<\/script>/', $responseBody, $matches);
 $initialData = json_decode($matches[1], true);
