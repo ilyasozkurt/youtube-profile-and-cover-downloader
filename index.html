@@ -71,6 +71,10 @@
             channel_url: channelUrl,
             download_type: downloadType
         }).then((response) => {
+            if (response.data.error) {
+                alert(response.data.error)
+                return;
+            }
             download(response.data.download_url);
         }).catch((error) => {
             alert(error)
