@@ -55,10 +55,11 @@
 <script>
     function download(url) {
         const downloadType = document.querySelector('#download-type').value;
-        const a = document.createElement('a')
-        a.href = url
-        a.download = downloadType === 'cover' ? 'cover.jpg' : 'profile.jpg'
-        a.click()
+        const downloaderDom = document.createElement('a');
+        downloaderDom.href = url
+        downloaderDom.target = '_blank'
+        downloaderDom.download = downloadType === 'cover' ? 'cover.jpg' : 'profile.jpg'
+        downloaderDom.click()
     }
 
     const form = document.querySelector('form');
