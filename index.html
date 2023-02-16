@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Youtube Profile Picture and Banner Downloader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="canonical" href="https://ilyasozkurt.com/tools/youtube-profile-picture-and-banner-downloader"/>
+</head>
+<body>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h1>
+                    Youtube Profile Picture and Banner Downloader
+                </h1>
+            </div>
+            <div class="col-12">
+                <form action="download.php" method="post">
+                    <div class="form-group mb-3">
+                        <label for="channel-url" class="form-label">YouTube Channel URL</label>
+                        <div class="input-group">
+                            <input type="url" name="channel_url" id="channel-url" class="form-control" aria-describedby="channel-help-block">
+                        </div>
+                        <div id="channel-help-block" class="form-text">
+                            Please enter channel url here
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="download-type" class="form-label">What to Download?</label>
+                        <div class="input-group">
+                            <select name="download_type" id="download-type" class="form-select" aria-describedby="download-type-help-block">
+                                <option value="cover">Cover</option>
+                                <option value="profile">Profile</option>
+                            </select>
+                        </div>
+                        <div id="download-type-help-block" class="form-text">
+                            You can select what to download
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn w btn-primary">Download</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function download(url) {
+        const a = document.createElement('a')
+        a.href = url
+        a.download = url.split('/').pop()
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+    }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const channelUrl = document.querySelector('#channel-url').value;
+        const downloadType = document.querySelector('#download-type').value;
+        axios.post('download.php', {
+            channel_url: channelUrl,
+            download_type: downloadType
+        }).then((response) => {
+            download(response.download_url);
+        }).catch((error) => {
+            alert(error)
+        });
+    });
+</script>
+
+</body>
+</html>
