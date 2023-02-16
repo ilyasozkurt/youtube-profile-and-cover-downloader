@@ -26,9 +26,9 @@ $responseDom = str_get_html($responseBody);
 $initialData = preg_match('/ytInitialData = (.*);<\/script>/', $responseBody, $matches);
 $initialData = json_decode($matches[1], true);
 
-$channelCover = end($initialData['header']['c4TabbedHeaderRenderer']['tvBanner']['tvBannerRenderer']['banner']['thumbnails'])['url'] ?? null;
+$channelCover = end($initialData['header']['c4TabbedHeaderRenderer']['tvBanner']['thumbnails'])['url'] ?? null;
 
-$channelLogo = $responseDom->find('link[property="og:image"]', 0)->href ?? null;
+$channelLogo = $responseDom->find('meta[property="og:image"]', 0)->href ?? null;
 
 if ($downloadType == 'cover') {
     $downloadURL = $channelCover;
