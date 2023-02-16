@@ -1,5 +1,6 @@
 <?php
 
+define('MAX_FILE_SIZE', 6000000); //This is for simple html dom parser
 ini_set('display_errors', 1);
 
 include 'vendor/autoload.php';
