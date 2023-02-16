@@ -9,6 +9,9 @@ use GuzzleHttp\Client;
 
 $client = new Client([
     'timeout' => 2.0,
+    'header' => [
+        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+    ],
 ]);
 
 $downloadURL = null;
@@ -21,7 +24,7 @@ if (!in_array($downloadType, ['cover', 'profile'])) {
 }
 
 $response = $client->request('GET', $channelURL);
-$responseBody = $response->getBody();
+$responseBody = $response->getBody()->getContents();
 $responseDom = str_get_html($responseBody);
 
 if (!$responseDom) {
