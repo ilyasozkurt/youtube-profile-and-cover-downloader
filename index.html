@@ -52,14 +52,12 @@
     </div>
 </main>
 
-<a href="" class="d-none" downloader></a>
-
 <script>
     function download(url) {
         const downloadType = document.querySelector('#download-type').value;
-        const a = document.querySelector('[downloader]')
+        const a = document.createElement('a')
         a.href = url
-        a.download = downloadType === 'cover' ? 'channels4_banner.jpg' : 'profile.jpg'
+        a.download = downloadType === 'cover' ? 'cover.jpg' : 'profile.jpg'
         a.click()
     }
 
@@ -72,7 +70,7 @@
             channel_url: channelUrl,
             download_type: downloadType
         }).then((response) => {
-            download(response.download_url);
+            download(response.data.download_url);
         }).catch((error) => {
             alert(error)
         });
