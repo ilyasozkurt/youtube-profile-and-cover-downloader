@@ -11,8 +11,9 @@ $client = new Client([
 ]);
 
 $downloadURL = null;
-$channelURL = $_REQUEST['channel_url'];
-$downloadType = $_REQUEST['download_type'];
+$requestData = json_decode(file_get_contents('php://input'), true);
+$channelURL = $requestData['channel_url'];
+$downloadType = $requestData['download_type'];
 
 if (!in_array($downloadType, ['cover', 'profile'])) {
     print json_encode(['error' => 'Invalid download type']);
