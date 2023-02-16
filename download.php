@@ -1,9 +1,9 @@
 <?php
 
 include 'vendor/autoload.php';
+include 'library/simple_html_dom.php';
 
 use GuzzleHttp\Client;
-use Sunra\PhpSimple\HtmlDomParser;
 
 $client = new Client([
     'base_uri' => 'https://www.youtube.com/',
@@ -21,7 +21,7 @@ if (!in_array($downloadType, ['cover', 'profile'])) {
 
 $response = $client->request('GET', $channelURL);
 $responseBody = $response->getBody();
-$responseDom = HtmlDomParser::str_get_html($responseBody);
+$responseDom = str_get_html($responseBody);
 
 $initialData = preg_match('/ytInitialData = (.*);<\/script>/', $responseBody, $matches);
 $initialData = json_decode($matches[1], true);
