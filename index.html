@@ -52,14 +52,15 @@
     </div>
 </main>
 
+<a href="" class="d-none" downloader></a>
+
 <script>
     function download(url) {
-        const a = document.createElement('a')
+        const downloadType = document.querySelector('#download-type').value;
+        const a = document.querySelector('[downloader]')
         a.href = url
-        a.download = url.split('/').pop()
-        document.body.appendChild(a)
+        a.download = downloadType === 'cover' ? 'channels4_banner.jpg' : 'profile.jpg'
         a.click()
-        document.body.removeChild(a)
     }
 
     const form = document.querySelector('form');
