@@ -24,26 +24,34 @@ if (!in_array($downloadType, ['cover', 'profile'])) {
     print json_encode(['error' => 'Invalid download type']);
 }
 
-$response = $client->request('GET', $channelURL);
-$responseBody = $response->getBody()->getContents();
-$responseDom = str_get_html($responseBody);
+try {
 
-if (!$responseDom) {
+    $response = $client->request('GET', $channelURL);
+    $responseBody = $response->getBody()->getContents();
+    $responseDom = str_get_html($responseBody);
+
+    if (!$responseDom) {
+        print json_encode(['error' => 'Invalid channel URL']);
+    }
+
+    $initialData = preg_match('/ytInitialData = (.*);<\/script>/', $responseBody, $matches);
+    $initialData = json_decode($matches[1], true);
+
+    $channelCover = end($initialData['header']['c4TabbedHeaderRenderer']['banner']['thumbnails'])['url'] ?? null;
+
+    $channelLogo = $responseDom->find('meta[property="og:image"]', 0)->getAttribute('content') ?? null;
+    if ($downloadType == 'cover') {
+        preg_match('/(.*?)\=w/', $channelCover, $matches);
+        $fullCoverURL = $matches[1] . '=w4000';
+        $downloadURL = $fullCoverURL;
+    } else {
+        $downloadURL = $channelLogo;
+    }
+
+    print json_encode(['download_url' => $downloadURL]);
+
+} catch (Exception $e) {
+
     print json_encode(['error' => 'Invalid channel URL']);
+
 }
-
-$initialData = preg_match('/ytInitialData = (.*);<\/script>/', $responseBody, $matches);
-$initialData = json_decode($matches[1], true);
-
-$channelCover = end($initialData['header']['c4TabbedHeaderRenderer']['banner']['thumbnails'])['url'] ?? null;
-
-$channelLogo = $responseDom->find('meta[property="og:image"]', 0)->getAttribute('content') ?? null;
-if ($downloadType == 'cover') {
-    preg_match('/(.*?)\=w/', $channelCover, $matches);
-    $fullCoverURL = $matches[1] . '=w4000';
-    $downloadURL = $fullCoverURL;
-} else {
-    $downloadURL = $channelLogo;
-}
-
-print json_encode(['download_url' => $downloadURL]);
